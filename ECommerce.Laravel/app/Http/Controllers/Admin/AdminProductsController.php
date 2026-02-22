@@ -217,4 +217,24 @@ class AdminProductsController extends Controller
 
         return response()->json(['message' => 'No files uploaded'], 400);
     }
+
+
+    public function inventory(Request $request)
+    {
+        $variants = ProductVariant::with('product')->orderByDesc('updated_at')->paginate($request->query('pageSize', 50));
+        return response()->json($variants);
+    }
+
+    public function updateInventory(Request $request, $variantId)
+    {
+        $variant = ProductVariant::find($variantId);
+        if (!$variant) return response()->json(['message' => 'Variant not found'], 404);
+
+        $variant->stock_quantity = $request->input('stockQuantity', $variant->stock_quantity);
+        $variant->price = $request->input('price', $variant->price);
+        $variant->save();
+
+        return response()->json($variant);
+    }
+
 }

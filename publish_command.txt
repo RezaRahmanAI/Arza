@@ -1,4 +1,2 @@
-# Backend Publish Command
-# Run this from the project root directory in PowerShell:
-
-dotnet publish .\ECommerce.API\ECommerce.API.csproj -c Release -o .\publish_api
+# ASP.NET Core API removed.
+# Use Laravel deployment for ECommerce.Laravel instead.

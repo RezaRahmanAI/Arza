@@ -1,0 +1,461 @@
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"
+  *ngIf="stats$ | async as stats; else loadingStats"
+>
+  <!-- Total Orders -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-primary/5 rounded-lg text-primary">
+        <lucide-icon [img]="icons.Receipt" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded-full"
+        >All time</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Total Orders</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.totalOrders }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Daily Traffic -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+    *ngIf="dailyTraffic$ | async as traffic"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-pink-50 rounded-lg text-pink-600">
+        <lucide-icon [img]="icons.Eye" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-pink-600 bg-pink-50 px-2 py-1 rounded-full"
+        >Today</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Daily Visitors</p>
+      <div class="flex items-baseline gap-2">
+        <h3 class="text-2xl font-bold text-primary tracking-tight">
+          {{ traffic.uniqueVisitors }}
+        </h3>
+        <span class="text-xs text-gray-500 font-medium"
+          >({{ traffic.pageViews }} views)</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Revenue -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-emerald-50 rounded-lg text-emerald-600">
+        <lucide-icon [img]="icons.CreditCard" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full"
+        >Revenue</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Total Revenue</p>
+      <app-price-display
+        class="text-primary"
+        [amount]="stats.totalRevenue"
+        size="lg"
+      ></app-price-display>
+    </div>
+  </div>
+
+  <!-- Delivered -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-blue-50 rounded-lg text-blue-600">
+        <lucide-icon [img]="icons.Truck" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full"
+        >Delivered</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Orders Delivered</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.deliveredOrders }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Pending -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-amber-50 rounded-lg text-amber-600">
+        <lucide-icon [img]="icons.Clock" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-full"
+        >Pending</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Pending Orders</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.pendingOrders }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Total Products -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-indigo-50 rounded-lg text-indigo-600">
+        <lucide-icon [img]="icons.Package" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full"
+        >Catalog</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Total Products</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.totalProducts }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Total Customers -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-purple-50 rounded-lg text-purple-600">
+        <lucide-icon [img]="icons.Users" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-full"
+        >Users</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Total Customers</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.totalCustomers }}
+      </h3>
+    </div>
+  </div>
+
+  <!-- Return Rate -->
+  <div
+    class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 hover:shadow-md transition-shadow"
+  >
+    <div class="flex items-start justify-between">
+      <div class="p-3 bg-rose-50 rounded-lg text-rose-600">
+        <lucide-icon [img]="icons.RotateCcw" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span
+        class="text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-1 rounded-full"
+        >Return Rate</span
+      >
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm font-medium mb-1">Returned Orders</p>
+      <h3 class="text-2xl font-bold text-primary tracking-tight">
+        {{ stats.returnedOrders }} ({{ stats.returnRate }})
+      </h3>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingStats>
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div
+      *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8]"
+      class="bg-surface p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-4 animate-pulse"
+    >
+      <div class="flex items-start justify-between">
+        <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>
+        <div class="w-16 h-5 bg-gray-50 dark:bg-gray-800 rounded-full"></div>
+      </div>
+      <div class="space-y-3">
+        <div class="w-24 h-4 bg-gray-100 dark:bg-gray-800 rounded"></div>
+        <div class="w-32 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Sales Analytics Section -->
+<div
+  class="bg-surface rounded-xl border border-gray-100 shadow-sm overflow-hidden mb-8"
+>
+  <div
+    class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+  >
+    <div>
+      <h3 class="text-lg font-bold text-primary">Sales Analytics</h3>
+      <p class="text-xs text-gray-500 mt-1">
+        Revenue performance over selected period
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <select
+        [value]="selectedRange"
+        (change)="onRangeChange($any($event.target).value)"
+        class="text-sm font-medium border-gray-200 rounded-lg bg-gray-50 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/10 transition-all cursor-pointer"
+      >
+        <option *ngFor="let range of timeRanges" [value]="range">
+          {{ range }}
+        </option>
+      </select>
+
+      <button
+        (click)="exportRevenueReport()"
+        class="text-sm font-medium text-primary hover:bg-primary/5 px-3 py-2 rounded-lg transition-colors border border-primary/20"
+      >
+        Export Report
+      </button>
+    </div>
+  </div>
+
+  <div class="p-6">
+    <div
+      class="relative h-[250px] w-full"
+      *ngIf="salesAnalytics$ | async as data; else loadingSales"
+    >
+      <!-- SVG Chart -->
+      <svg
+        class="w-full h-full"
+        viewBox="0 0 472 150"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop
+              offset="0%"
+              stop-color="var(--color-primary)"
+              stop-opacity="0.2"
+            />
+            <stop
+              offset="100%"
+              stop-color="var(--color-primary)"
+              stop-opacity="0"
+            />
+          </linearGradient>
+        </defs>
+
+        <!-- Grid Lines -->
+        <g
+          class="text-gray-100"
+          stroke="currentColor"
+          stroke-width="1"
+          stroke-dasharray="4"
+        >
+          <line x1="0" y1="37.5" x2="472" y2="37.5" />
+          <line x1="0" y1="75" x2="472" y2="75" />
+          <line x1="0" y1="112.5" x2="472" y2="112.5" />
+        </g>
+
+        <!-- Area Fill -->
+        <path [attr.d]="getAreaPath(data)" fill="url(#salesGradient)" />
+
+        <!-- Main Line -->
+        <path
+          [attr.d]="getChartPath(data)"
+          fill="none"
+          stroke="var(--color-primary)"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <!-- Data Points -->
+        <circle
+          *ngFor="let d of data; let i = index"
+          [attr.cx]="(i / (data.length - 1)) * 472"
+          [attr.cy]="
+            150 - 20 - (d.amount / Math.max(1, getMaxAmount(data))) * 110
+          "
+          r="4"
+          class="fill-white stroke-primary stroke-2"
+        />
+      </svg>
+
+      <!-- Chart Labels -->
+      <div class="flex justify-between mt-4 border-t border-gray-50 pt-2">
+        <span
+          class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+          *ngFor="
+            let label of [
+              data[0],
+              data[Math.floor(data.length / 2)],
+              data[data.length - 1],
+            ]
+          "
+        >
+          {{ label?.date }}
+        </span>
+      </div>
+    </div>
+    <ng-template #loadingSales>
+      <div
+        class="h-[250px] w-full flex items-center justify-center bg-gray-50/50 rounded-lg"
+      >
+        <div class="animate-pulse flex flex-col items-center gap-2">
+          <div
+            class="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin"
+          ></div>
+          <span class="text-sm text-gray-500 font-medium"
+            >Loading analytics...</span
+          >
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div
+    class="lg:col-span-2 bg-surface rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col"
+  >
+    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+      <h3 class="text-lg font-bold text-primary">Recent Orders</h3>
+      <a
+        class="text-sm font-medium text-primary hover:underline"
+        routerLink="/admin/orders"
+      >
+        View All
+      </a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-gray-50/50">
+          <tr>
+            <th
+              class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Order ID
+            </th>
+            <th
+              class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Customer
+            </th>
+            <th
+              class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Date
+            </th>
+            <th
+              class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Amount
+            </th>
+            <th
+              class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          class="divide-y divide-gray-100"
+          *ngIf="recentOrders$ | async as orders"
+        >
+          <tr
+            class="hover:bg-gray-50/50 transition-colors"
+            *ngFor="let order of orders"
+          >
+            <td class="px-6 py-4 text-sm font-medium text-primary">
+              {{ order.orderNumber }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-600">
+              {{ order.customerName }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+              {{ order.orderDate | date: "mediumDate" }}
+            </td>
+            <td class="px-6 py-4 text-sm font-medium text-primary">
+              <app-price-display
+                [amount]="order.total"
+                size="sm"
+              ></app-price-display>
+            </td>
+
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="statusClass(order.status)"
+              >
+                {{ order.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div
+    class="bg-surface rounded-xl border border-gray-100 shadow-sm flex flex-col"
+  >
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-lg font-bold text-primary">Popular Products</h3>
+    </div>
+    <div
+      class="p-6 flex flex-col gap-6"
+      *ngIf="popularProducts$ | async as products"
+    >
+      <div class="flex items-center gap-4" *ngFor="let product of products">
+        <div
+          class="bg-gray-100 rounded-lg w-12 h-12 bg-cover bg-center shrink-0"
+          data-alt="Abstract gradient placeholder for product image"
+          [style.background-image]="
+            'url(' + imageUrlService.getImageUrl(product.imageUrl) + ')'
+          "
+        ></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-primary truncate">
+            {{ product.name }}
+          </p>
+          <p class="text-xs text-gray-500">
+            {{ product.soldCount }} sold • {{ product.stock }} in stock
+          </p>
+        </div>
+
+        <div class="text-sm font-bold text-primary">
+          <app-price-display
+            [amount]="product.price"
+            size="sm"
+          ></app-price-display>
+        </div>
+      </div>
+      <button
+        class="w-full mt-2 py-2 text-sm text-primary font-medium bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+        type="button"
+        routerLink="/admin/products"
+      >
+        View All Products
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-12 mb-6 text-center" *ngIf="settings$ | async as settings">
+  <p class="text-sm text-gray-400">
+    © {{ Math.max(2026, date.getFullYear()) }}
+    {{ settings.websiteName || "Admin Console" }}. All rights reserved.
+  </p>
+</footer>
